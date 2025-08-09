@@ -238,6 +238,7 @@ name = "pybrowser"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "pre-commit" },
     { name = "pyscript" },
 ]
 
@@ -248,7 +249,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pyscript", specifier = ">=0.3.3" }]
+requires-dist = [
+    { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "pyscript", specifier = ">=0.3.3" },
+]
 
 [package.metadata.requires-dev]
 dev = [
