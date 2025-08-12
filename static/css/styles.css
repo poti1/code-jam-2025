@@ -1,0 +1,106 @@
+:root {
+    --ui-text-color: #F8F9FA;
+    --field-background-color: #F8F9FA;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+    background-color: #191715;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    color: var(--ui-text-color);
+}
+
+body {
+    overflow-y: hidden;
+}
+
+.browser-app {
+    background-color: #343A40;
+    padding: 42px;
+    border-radius: 15px 15px;
+    width: 80%;
+    margin: auto;
+    margin-top: 72px;
+    border: 1px solid #555668;
+}
+
+.browser-utilites-nav {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 32px;
+}
+
+.url-bar {
+    padding-top: 3px;
+}
+
+.url-bar__form {
+    height: 24px;
+    appearance: none;
+    padding-right: 642px;
+    padding-left: 32px;
+    border-radius: 15px;
+    border-style: none;
+    background-color: var(--field-background-color);
+}
+
+input[type=url] {
+    background-image: url("./images/icons/ssl_shield.svg");
+    background-repeat: no-repeat;
+    background-position: 6px;
+}
+
+.browser-nav__items {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.browser-tabs {
+    display: flex;
+}
+
+.tab-title {
+    color: #343A40;
+}
+
+.tab-title span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    width: 112px;
+    font-weight: 500;
+}
+
+.browser-tabs__default {
+    display: flex;
+    background-color: #EAECEE;
+    width: 200px;
+    position: relative;
+    left: 30px;
+    margin-top: 24px;
+    gap: 4px;
+    align-items: center;
+    padding-left: 16px;
+    padding-top: 4px;
+}
+
+.browser-body {
+    background-color: var(--field-background-color);
+    height: 100vh;
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+    border: 1px solid #343A40;
+    background-color: var(--field-background-color);
+}
+
+.round-top-corners {
+    border-top-right-radius: 38px;
+    border-top-left-radius: 38px;
+}
