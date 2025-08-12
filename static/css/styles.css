@@ -50,7 +50,7 @@ body {
 }
 
 input[type=url] {
-    background-image: url("./images/icons/ssl_shield.svg");
+    background-image: url("../images/icons/ssl_shield.svg");
     background-repeat: no-repeat;
     background-position: 6px;
 }
