@@ -37,6 +37,8 @@ class Element:
 class Document:
     """Represent the HTML document."""
 
+    head: Element | None = None
+    form: Element | None = None
     metadata: dict[str, str]
     root: Element
 
@@ -75,3 +77,5 @@ class ParserState:
     # state to return to after being in put in the character reference state
     return_state: str = ""
     need_to_reconsume: bool = False
+    head_ptr: bool = False
+    open_elements_stack: list[Element] | None = None
