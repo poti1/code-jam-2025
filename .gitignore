@@ -35,3 +35,6 @@ build/
 # Testing dirs and files
 testing/
 test.py
+
+# Vim
+*.sw[op]

@@ -37,10 +37,10 @@ class Element:
 class Document:
     """Represent the HTML document."""
 
-    head: Element | None = None
-    form: Element | None = None
     metadata: dict[str, str]
     root: Element
+    head: Element | None = None
+    form: Element | None = None
 
 
 @dataclass

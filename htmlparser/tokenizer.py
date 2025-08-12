@@ -1,6 +1,6 @@
-from types import Attribute, ParserState, Token
+from _types import Attribute, ParserState, Token
 
-from treeconstuctor import tree_constructor
+from treeconstructor import tree_constructor
 
 
 def parser_error(row: int, col: int, message: str) -> None:
