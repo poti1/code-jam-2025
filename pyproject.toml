@@ -44,5 +44,13 @@ ignore = [
     # TODOs.
     "TD002",
     "TD003",
+    # Avoid specifying long messages outside the exception class
+    "TRY003",
+    # Don't use string literals in raise statements
+    "EM101",
+    # Don't use self.assert* methods
+    "PT009",
+    # Use a list comprehension
+    "PERF401",
     "FIX",
 ]
