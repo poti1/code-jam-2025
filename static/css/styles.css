@@ -61,6 +61,21 @@ input[type=url] {
     justify-content: center;
 }
 
+.backward-arrow:hover,
+.backward-arrow:focus {
+    cursor: pointer;
+}
+
+.forward-arrow:hover,
+.forward-arrow:focus {
+    cursor: pointer;
+}
+
+.reload:hover,
+.reload:focus {
+    cursor: pointer;
+}
+
 .browser-tabs {
     display: flex;
 }
