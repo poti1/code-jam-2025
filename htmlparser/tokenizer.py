@@ -1,51 +1,12 @@
-# Reference: https://html.spec.whatwg.org/
-from dataclasses import dataclass
-from typing import Literal
+from types import Attribute, ParserState, Token
+
+from treeconstuctor import tree_constructor
 
 
 def parser_error(row: int, col: int, message: str) -> None:
     """Print error messages for debugging purposes."""
     message = f"{message} at line:{row}, col:{col}"
     print(message)
-
-
-@dataclass
-class Attribute:
-    """Represents a tags attribute(s)."""
-
-    name: str
-    value: str
-
-
-@dataclass
-class Token:
-    """Represent HTML tokens."""
-
-    kind: str | None = None
-    char: str | None = None
-    tag_name: str | None = None
-    attrs: list[Attribute] | None = None
-    curr_attr: int | None = None
-    self_closing: bool = False
-    data: str | None = None
-
-
-@dataclass
-class Element:
-    """Represent HTML elements."""
-
-    tag_name: str
-    attrs: dict[str, str]
-    text: str
-    children: list["Element"]
-
-
-@dataclass
-class Document:
-    """Represent the HTML document."""
-
-    metadata: dict[str, str]
-    root: Element
 
 
 last_start_tag_emitted: Token | None
@@ -68,49 +29,6 @@ def is_appropriate_end_tag_token(
     if last_start_tag_emitted is not None:
         return end_tag_token.tag_name == last_start_tag_emitted.tag_name
     return False
-
-
-open_elements_stack: list[Element] = []
-
-
-def tree_constructor(token: Token) -> None:  # https://html.spec.whatwg.org/multipage/parsing.html#tree-construction
-    """Construct HTML document tree."""
-
-
-@dataclass
-class ParserState:
-    """Represent state of the parser."""
-
-    token: Token | None = None
-    temp_buff: str | None = None
-    pause: bool = False
-    insertion_mode: Literal[
-        "initial",
-        "before html",
-        "before head",
-        "in head",
-        "in head noscript",
-        "after head",
-        "in body",
-        "text",
-        "in table",
-        "in table text",
-        "in caption",
-        "in column group",
-        "in table body",
-        "in row",
-        "in cell",
-        "in template",
-        "after body",
-        "in frameset",
-        "after frameset",
-        "after after body",
-        "after after frameset",
-    ] = "initial"
-    state: str = "data"
-    # state to return to after being in put in the character reference state
-    return_state: str = ""
-    need_to_reconsume: bool = False
 
 
 class Tokenizer:
@@ -523,15 +441,3 @@ class Tokenizer:
                 self._character_reference_state()
             case _:
                 pass
-
-
-def parse_html(html: str) -> None:
-    """Parse HTML string.
-
-    Args:
-        html (list[str]): The full html string
-
-    Returns:
-        None
-
-    """

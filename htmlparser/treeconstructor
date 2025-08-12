@@ -1,0 +1,7 @@
+# Reference: https://html.spec.whatwg.org/multipage/parsing.html#tree-construction
+from types import Element, Token
+
+open_elements_stack: list[Element] = []
+
+def tree_constructor(token: Token) -> None:
+    """Construct HTML document tree."""
