@@ -46,13 +46,14 @@
             </div>
 
             <div class="browser-body">
-                <py-script>
-                    from pyodide.http import pyfetch
+                <script type="py" src="static/python/browser_nav.py"></script>
+                <!-- <py-script class="browser-body__script">
+                    import sys
+                    from pyscript import display
 
-                    resp = await pyfetch(
-                        "http://127.0.0.1:8000/webpage/?domain=https://ezgif.com"
-                    )
-                </py-script>
+
+                    display(sys.version)
+                </py-script> -->
             </div>
         </div>
     </div>
