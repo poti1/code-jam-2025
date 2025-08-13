@@ -20,12 +20,12 @@
             <div class="browser-nav">
                 <div class="browser-nav__items">
                     <div class="backward-arrow">
-                        <img src="/static/images/icons/backward.svg" alt="">
+                        <img src="/static/images/icons/backward.svg" py-click="forward_handler" alt="">
                     </div>
-                    <div class="forward-arrow">
+                    <div class="forward-arrow" py-click="backward_handler">
                         <img src="/static/images/icons/forward.svg" alt="">
                     </div>
-                    <div class="reload">
+                    <div class="reload" py-click="reload_handler">
                         <img src="/static/images/icons/reload.svg" alt="">
                     </div>
                     <div class="url-bar">
