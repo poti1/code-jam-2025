@@ -1,5 +1,7 @@
-from dataclasses import dataclass
-from typing import Literal
+from collections import deque
+from collections.abc import Generator
+from dataclasses import dataclass, field
+from typing import Literal, Union
 
 
 @dataclass
@@ -24,6 +26,29 @@ class Token:
 
 
 @dataclass
+class Document:
+    """Represent the HTML document."""
+
+    is_element: bool = False
+    children: list["Element"] = field(default_factory=list)
+
+    def traverse(self) -> Generator["Element", None, None]:
+        q = deque([self])
+        while q:
+            curr = q.popleft()
+            yield curr
+            q.extend(curr.children)
+
+    def print(self) -> None:
+        for node in self.traverse():
+            if node.is_element:
+                name_str: str = node.name + "; " if node.attrs != {} else node.name
+                attrs_str: str = str(node.attrs) if node.attrs != {} else ""
+                attrs_str += "; " if node.text.strip() != "" else attrs_str
+                print(f"{name_str}{attrs_str}{node.text.strip()}")
+
+
+@dataclass
 class Element:
     """Represent HTML elements."""
 
@@ -31,16 +56,9 @@ class Element:
     attrs: dict[str, str]
     text: str
     children: list["Element"]
-
-
-@dataclass
-class Document:
-    """Represent the HTML document."""
-
-    metadata: dict[str, str]
-    root: Element
-    head: Element | None = None
-    form: Element | None = None
+    parent: Union["Element", Document]
+    dont_display: bool
+    is_element: bool = True
 
 
 @dataclass
