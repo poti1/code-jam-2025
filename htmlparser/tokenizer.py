@@ -102,6 +102,17 @@ class Tokenizer:
             case _:
                 self._emit_token(Token(kind="char", char=self.char))
 
+    def _style_state(self) -> None:
+        match self.char:
+            case "&":
+                self._switch_to_char_ref_state("style")
+            case "<":
+                self.parser_state.state = "style lt sign"
+            case "":
+                self._emit_token(Token(kind="EOF"))
+            case _:
+                self._emit_token(Token(kind="char", char=self.char))
+
     def _rawtext_state(self) -> None:
         match self.char:
             case "&":
@@ -185,6 +196,10 @@ class Tokenizer:
             case "/":
                 self.parser_state.state = "self-closing start tag"
             case ">":
+              # if self.parser_state.token.tag_name == "style":
+              #     self.parser_state.state = "style data"
+              # else:
+              #     self.parser_state.state = "data"
                 self.parser_state.state = "data"
                 self._emit_token_from_parser_state(self.parser_state.token)
             case "":
@@ -212,6 +227,47 @@ class Tokenizer:
                 self.parser_state.state = "rcdata"
 
     def _rcdata_end_tag_name_state(self) -> None:
+        def anything_else() -> None:
+            self._emit_token(Token(kind="char", char="<"))
+            self._emit_token(Token(kind="char", char="/"))
+            for char in self.parser_state.temp_buff[::-1]:
+                self._emit_token(Token("char", char=char))
+
+        match self.char:
+            case "\t" | "\n" | "\f" | " ":
+                if is_appropriate_end_tag_token(self.parser_state.token):
+                    self.parser_state.state = "before attr name"
+                else:
+                    anything_else()
+            case "/":
+                if is_appropriate_end_tag_token(self.parser_state.token):
+                    self.parser_state.state = "self-closing start tag"
+                else:
+                    anything_else()
+            case ">":
+                if is_appropriate_end_tag_token(self.parser_state.token):
+                    self.parser_state.state = "data"
+                    self._emit_token_from_parser_state(self.parser_state.token)
+                else:
+                    anything_else()
+            case _:
+                anything_else()
+
+    def _style_lt_sign_state(self) -> None:
+        match self.char:
+            case "/":
+                self._create_token("end tag")
+                self.parser_state.token.tag_name = ""
+                self.parser_state.temp_buff = ""
+                self.parser_state.need_to_reconsume = True
+                self.parser_state.state = "style end tag open"
+            case _:
+                self._emit_token(Token(kind="char", char="<"))
+                self._emit_token(Token(kind="char", char="/"))
+                self.parser_state.need_to_reconsume = True
+                self.parser_state.state = "style"
+
+    def _style_end_tag_name_state(self) -> None:
         def anything_else() -> None:
             self._emit_token(Token(kind="char", char="<"))
             self._emit_token(Token(kind="char", char="/"))
@@ -419,6 +475,10 @@ class Tokenizer:
                 self._rcdata_lt_sign_state()
             case "rcdata end tag name":
                 self._rcdata_end_tag_name_state()
+            case "style lt sign":
+                self._style_lt_sign_state()
+            case "style end tag name":
+                self._style_end_tag_name_state()
             case "before attr name":
                 self._before_attr_name_state()
             case "attr name":

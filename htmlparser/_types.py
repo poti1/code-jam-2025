@@ -39,13 +39,26 @@ class Document:
             yield curr
             q.extend(curr.children)
 
-    def print(self) -> None:
+    def print(self,as_json=False) -> None:
+        import json
+
         for node in self.traverse():
             if node.is_element:
                 name_str: str = node.name + "; " if node.attrs != {} else node.name
                 attrs_str: str = str(node.attrs) if node.attrs != {} else ""
                 attrs_str += "; " if node.text.strip() != "" else attrs_str
-                print(f"{name_str}{attrs_str}{node.text.strip()}")
+
+                if as_json:
+                    print(json.dumps(
+                        {
+                            "name_str": name_str,
+                            "attrs_str": attrs_str,
+                        },
+                        sort_keys=True,
+                        indent=4,
+                    ))
+                else:
+                    print(f"{name_str}{attrs_str}{node.text.strip()}")
 
 
 @dataclass
@@ -87,11 +100,13 @@ class ParserState:
         "in template",
         "after body",
         "in frameset",
+        "in style",
         "after frameset",
         "after after body",
         "after after frameset",
     ] = "initial"
     state: str = "data"
+
     # state to return to after being in put in the character reference state
     return_state: str = ""
     need_to_reconsume: bool = False

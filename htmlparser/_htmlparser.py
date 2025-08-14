@@ -55,4 +55,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with Path(args.filename).open(encoding="utf-8") as f:
-        parse_html(f.read()).print()
+        parse_html(f.read()).print(as_json=True)

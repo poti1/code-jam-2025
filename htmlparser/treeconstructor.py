@@ -18,7 +18,7 @@ def tree_constructor(token: Token) -> None:
     parent: Element | Document = open_element_stack[-1] if len(open_element_stack) > 0 else html_doc
     if token.kind == "start tag":
         match token.tag_name:
-            case "head" | "template" | "script":
+            case "head" | "template" | "script" | "style":
                 el: Element = new_element(token, parent, dont_display=True)
                 parent.children.append(el)
                 open_element_stack.append(el)
