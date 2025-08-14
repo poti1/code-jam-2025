@@ -27,7 +27,7 @@ class Token:
 class Element:
     """Represent HTML elements."""
 
-    tag_name: str
+    name: str
     attrs: dict[str, str]
     text: str
     children: list["Element"]
@@ -78,4 +78,3 @@ class ParserState:
     return_state: str = ""
     need_to_reconsume: bool = False
     head_ptr: bool = False
-    open_elements_stack: list[Element] | None = None
