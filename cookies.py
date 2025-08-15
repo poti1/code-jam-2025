@@ -2,8 +2,6 @@ import re
 from dataclasses import dataclass
 from typing import Self
 
-HEADER_REGEX = re.compile("(?P<name>[^:]+):(?P<value>.*)")
-
 
 class InvalidCookieHeader(Exception):  # noqa: N818
     """You passed a non-cookie header into the cookie parser."""
@@ -107,7 +105,7 @@ class CookieStorage:
         """Create a new cookiestorage from the relevant set-cookie headers."""
         cookies = []
         for header in cookie_headers:
-            match = HEADER_REGEX.match(header)
+            match = re.match("(?P<name>[^:]+):(?P<value>.*)", header)
             if not match:
                 raise InvalidCookieHeader("Not a header: %s", header)
 
