@@ -3,10 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyBrowser</title>
+    <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <title>pyBrowser</title>
 </head>
 <body>
-    <h1>Hello PyDis CodeJam!</h1>
-    <script type="py" src="./main.py" config="./pyscript.toml"></script>
+    <div class="browser-app">
+        <div>
+            <div class="browser-utilites-nav">
+                <div>File</div>
+                <div>Edit</div>
+                <div>View</div>
+                <div>About</div>
+            </div>
+
+            <div class="browser-nav">
+                <div class="browser-nav__items">
+                    <div class="backward-arrow">
+                        <img src="/static/images/icons/backward.svg" alt="">
+                    </div>
+                    <div class="forward-arrow">
+                        <img src="/static/images/icons/forward.svg" alt="">
+                    </div>
+                    <div class="reload">
+                        <img src="/static/images/icons/reload.svg" alt="">
+                    </div>
+                    <div class="url-bar">
+                        <input class="url-bar__form" type="url" placeholder="Enter an address">
+                    </div>
+                </div>
+            </div>
+
+            <div class="browser-tabs">
+                <div class="browser-tabs__default round-top-corners">
+                    <div class="tab-favicon">
+                        <img src="/static/images/icons/compass_fill.svg" alt="">
+                    </div>
+                    <div class="tab-title">
+                        <span>Start Page</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="browser-body">
+                <script type="py" src="static/python/browser_nav.py"></script>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
