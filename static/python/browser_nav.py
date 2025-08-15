@@ -1,9 +1,12 @@
+import json
 import urllib.parse
 
 from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
+
+from cookies import CookieStorage
 
 
 class WebPage:
@@ -55,6 +58,7 @@ class BrowserHistory:
 
 
 browser_history_obj = BrowserHistory()
+cookie_storage = CookieStorage()
 user_history = []
 
 
@@ -64,10 +68,20 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
 
     if current_website_url:
         resp = await pyfetch(
-            f"http://127.0.0.1:8000/webpage/?domain={current_website_url}",
+            f"http://127.0.0.1:8000/webpage/",
+            method="POST",
+            body=json.dumps({
+                "domain": current_website_url,
+                "headers": cookie_storage.to_headers(),
+            }),
         )
 
-        console.log(await resp.text())
+        data = await resp.json()
+
+        console.log(data)
+
+        # Parse out cookie headers
+        cookie_storage.handle_headers(data["headers"], data["domain"])
 
         # Access the response data and pass to the parser to display it correctly.
         browser_body = document.getElementsByClassName("browser-body")  # noqa: F841
