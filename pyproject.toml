@@ -5,9 +5,13 @@ version = "0.1.0"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiohttp>=3.12.15",
+    "fastapi>=0.116.1",
+    "jinja2>=3.1.6",
     "pre-commit>=4.2.0",
     "pyscript>=0.3.3",
     "ruff>=0.12.8",
+    "uvicorn>=0.35.0",
 ]
 
 [dependency-groups]
@@ -44,5 +48,13 @@ ignore = [
     # TODOs.
     "TD002",
     "TD003",
+    # Avoid specifying long messages outside the exception class
+    "TRY003",
+    # Don't use string literals in raise statements
+    "EM101",
+    # Don't use self.assert* methods
+    "PT009",
+    # Use a list comprehension
+    "PERF401",
     "FIX",
 ]
