@@ -22,6 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/", response_class=HTMLResponse)
 def read_root() -> HTMLResponse:  # noqa: D103
     with open("index.html") as index_html:  # noqa: PTH123
@@ -32,7 +33,6 @@ def read_root() -> HTMLResponse:  # noqa: D103
 
 @app.post("/webpage/")
 async def get_website_html(domain: str, headers: dict[str, str]) -> dict:  # noqa: D103
-
     async with aiohttp.ClientSession(headers=headers) as session, session.get(domain) as resp:
         html = await resp.text()
         resp_headers = resp.raw_headers

@@ -68,12 +68,14 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
 
     if current_website_url:
         resp = await pyfetch(
-            f"http://127.0.0.1:8000/webpage/",
+            "http://127.0.0.1:8000/webpage/",
             method="POST",
-            body=json.dumps({
-                "domain": current_website_url,
-                "headers": cookie_storage.to_headers(),
-            }),
+            body=json.dumps(
+                {
+                    "domain": current_website_url,
+                    "headers": cookie_storage.to_headers(),
+                },
+            ),
         )
 
         data = await resp.json()
