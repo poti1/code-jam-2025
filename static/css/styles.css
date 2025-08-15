@@ -48,6 +48,7 @@ body {
     background-color: var(--field-background-color);
     resize: none;
     overflow: hidden;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
 }
 
 .browser-nav__items {
