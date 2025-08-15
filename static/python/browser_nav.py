@@ -80,7 +80,11 @@ async def load_page(url: str) -> dict:
     console.log(data)
 
     # Parse out cookie headers
-    cookie_storage.handle_headers(data["headers"], data["domain"])
+    cookie_storage.handle_headers(
+        headers=data["headers"],
+        request_host=url,
+    )
+
     return data
 
 
