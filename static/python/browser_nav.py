@@ -1,12 +1,11 @@
 import json
 import urllib.parse
 
+from cookies import CookieStorage
 from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
-
-from cookies import CookieStorage
 
 
 class WebPage:
@@ -62,29 +61,35 @@ cookie_storage = CookieStorage()
 user_history = []
 
 
+async def load_page(url: str) -> dict:
+    """Load a page, handling cookies and api interfacing."""
+    resp = await pyfetch(
+        "http://127.0.0.1:8000/webpage/",
+        method="POST",
+        body=json.dumps(
+            {
+                "target": url,
+                "headers": cookie_storage.to_headers(),
+            },
+        ),
+        headers={"Content-Type": "application/json"},
+    )
+
+    data = await resp.json()
+
+    console.log(data)
+
+    # Parse out cookie headers
+    cookie_storage.handle_headers(data["headers"], data["domain"])
+    return data
+
+
 async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Re-fetches the web page."""
     current_website_url: str = browser_history_obj.get_current_page()
 
     if current_website_url:
-        resp = await pyfetch(
-            "http://127.0.0.1:8000/webpage/",
-            method="POST",
-            body=json.dumps(
-                {
-                    "domain": current_website_url,
-                    "headers": cookie_storage.to_headers(),
-                },
-            ),
-        )
-
-        data = await resp.json()
-
-        console.log(data)
-
-        # Parse out cookie headers
-        cookie_storage.handle_headers(data["headers"], data["domain"])
-
+        resp = await load_page(current_website_url)  # noqa: F841
         # Access the response data and pass to the parser to display it correctly.
         browser_body = document.getElementsByClassName("browser-body")  # noqa: F841
 
@@ -95,11 +100,9 @@ async def google_search(query: str) -> FetchResponse:
         string=query,
     )
 
-    resp = await pyfetch(
-        f"http://127.0.0.1:8000/webpage/?domain=https://www.google.com/search?q={encoded_query}",
-    )
+    resp = await load_page(f"https://www.google.com/search?q={encoded_query}")
 
-    return resp, encoded_query
+    return resp["content"], encoded_query
 
 
 async def keypress(event: KeyboardEvent) -> None:
@@ -112,16 +115,14 @@ async def keypress(event: KeyboardEvent) -> None:
 
             if input_url.lower().startswith(("https://", "ftp://")):
                 browser_history_obj.load_page(url=input_url)
-                resp = await pyfetch(
-                    f"http://127.0.0.1:8000/webpage/?domain={input_url}",
-                )
+                resp = await load_page(input_url)
                 user_history.append(input_url)
-                console.log(await resp.text())
+                console.log(resp["content"])
             else:
                 resp, encoded_query = await google_search(query=event.target.value)
                 browser_history_obj.load_page(url=encoded_query)
                 user_history.append(encoded_query)
-                console.log(await resp.text())
+                console.log(resp)
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -131,11 +132,9 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     console.log(backward_url)
 
     if backward_url is not None:
-        resp = await pyfetch(
-            f"http://127.0.0.1:8000/webpage/?domain={backward_url}",
-        )
+        resp = await load_page(backward_url)
 
-        console.log(await resp.text())
+        console.log(resp["content"])
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -143,11 +142,9 @@ async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     forward_url: str = browser_history_obj.backward()
 
     if forward_url is not None:
-        resp = await pyfetch(
-            f"http://127.0.0.1:8000/webpage/?domain={forward_url}",
-        )
+        resp = await load_page(forward_url)
 
-        console.log(await resp.text())
+        console.log(resp["content"])
 
 
 address_bar = document.getElementsByClassName("url-bar")[0]
