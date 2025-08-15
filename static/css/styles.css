@@ -40,19 +40,14 @@ body {
 }
 
 .url-bar__form {
-    height: 24px;
     appearance: none;
-    padding-right: 642px;
-    padding-left: 32px;
+    width: 642px;
+    padding: 4px;
     border-radius: 15px;
     border-style: none;
     background-color: var(--field-background-color);
-}
-
-input[type=url] {
-    background-image: url("../images/icons/ssl_shield.svg");
-    background-repeat: no-repeat;
-    background-position: 6px;
+    resize: none;
+    overflow: hidden;
 }
 
 .browser-nav__items {
