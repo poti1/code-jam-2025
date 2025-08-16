@@ -52,6 +52,12 @@ body {
     text-indent: 24px;
 }
 
+.ssl-shield {
+    position: relative;
+    top: 2px;
+    right: 662px;
+}
+
 .browser-nav__items {
     display: flex;
     gap: 24px;
