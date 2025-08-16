@@ -116,8 +116,17 @@ async def keypress(event: KeyboardEvent) -> None:
 
         if event.target.value != "":
             input_url = event.target.value.lower()
+            textarea_element = document.getElementsByTagName("textarea")[0]
 
-            if input_url.lower().startswith(("https://", "ftp://")):
+            if "\n" in input_url:
+                input_url = input_url.replace("\n", "")
+                textarea_element.value = input_url
+
+            if input_url.startswith("http://"):
+                input_url = input_url.replace("http://", "https://")
+                textarea_element.value = input_url
+
+            if input_url.startswith(("https://", "ftp://")):
                 browser_history_obj.load_page(url=input_url)
                 resp = await load_page(input_url)
                 user_history.append(input_url)
