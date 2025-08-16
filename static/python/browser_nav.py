@@ -135,7 +135,7 @@ async def keypress(event: KeyboardEvent) -> None:
                 resp, encoded_query = await google_search(query=event.target.value)
                 browser_history_obj.load_page(url=encoded_query)
                 user_history.append(encoded_query)
-                console.log(resp)
+                console.log(resp["content"])
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
