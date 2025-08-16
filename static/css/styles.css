@@ -49,6 +49,7 @@ body {
     resize: none;
     overflow: hidden;
     font-family: "Inter", Helvetica, Arial, sans-serif;
+    text-indent: 24px;
 }
 
 .browser-nav__items {
