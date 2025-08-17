@@ -145,23 +145,25 @@ async def keypress(event: KeyboardEvent) -> None:
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the backward button functionality."""
+    textarea_element = document.getElementsByTagName("textarea")[0]
     backward_url: str = browser_history_obj.backward()
 
     console.log(backward_url)
 
     if backward_url is not None:
         resp = await load_page(backward_url)
-
+        textarea_element.value = resp["final_url"]
         console.log(resp["content"])
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the forward button functionality."""
+    textarea_element = document.getElementsByTagName("textarea")[0]
     forward_url: str = browser_history_obj.backward()
 
     if forward_url is not None:
         resp = await load_page(forward_url)
-
+        textarea_element.value = resp["final_url"]
         console.log(resp["content"])
 
 
