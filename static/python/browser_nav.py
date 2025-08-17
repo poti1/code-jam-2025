@@ -172,14 +172,15 @@ async def direct_address_bar():  # noqa: ANN201
     return document.getElementById("direct-url-bar")
 
 
-address_bar = document.getElementsByClassName("url-bar")[0]
-add_event_listener(address_bar, "keypress", keypress)
+async def main() -> None:  # noqa: D103
+    address_bar = document.getElementsByClassName("url-bar")[0]
+    add_event_listener(address_bar, "keypress", keypress)
 
-reload_element = document.getElementsByClassName("reload")[0]
-add_event_listener(reload_element, "click", reload_handler)
+    reload_element = document.getElementsByClassName("reload")[0]
+    add_event_listener(reload_element, "click", reload_handler)
 
-forward_element = document.getElementsByClassName("forward-arrow")[0]
-add_event_listener(forward_element, "click", forward_handler)
+    forward_element = document.getElementsByClassName("forward-arrow")[0]
+    add_event_listener(forward_element, "click", forward_handler)
 
-backward_element = document.getElementsByClassName("backward-arrow")[0]
-add_event_listener(backward_element, "click", backward_handler)
+    backward_element = document.getElementsByClassName("backward-arrow")[0]
+    add_event_listener(backward_element, "click", backward_handler)
