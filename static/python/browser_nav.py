@@ -1,3 +1,4 @@
+import asyncio
 import json
 import urllib.parse
 
@@ -184,3 +185,7 @@ async def main() -> None:  # noqa: D103
 
     backward_element = document.getElementsByClassName("backward-arrow")[0]
     add_event_listener(backward_element, "click", backward_handler)
+
+
+if __name__ == "__main__":
+    asyncio.create_task(main())  # noqa: RUF006
