@@ -51,7 +51,11 @@ async def get_website_html(payload: Annotated[WebRequestPayload, Body()]) -> dic
         resp_headers = resp.raw_headers
         final_url: str = str(resp.url)
 
-    return {"content": html, "headers": resp_headers, "final_url": final_url}
+    return {
+        "content": html,
+        "headers": resp_headers,
+        "final_url": final_url,
+    }
 
 
 async def main() -> None:  # noqa: D103
