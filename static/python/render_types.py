@@ -11,12 +11,16 @@ from js import window
 
 @dataclass
 class Pos:
+    """Represent position of Boxes and their content."""
+
     x: InitVar[int] = None
     y: InitVar[int] = None
 
 
 @dataclass
 class Box:
+    """Represent element container."""
+
     top: InitVar[int] = 0
     right: InitVar[int] = 0
     bottom: InitVar[int] = 0
@@ -25,11 +29,15 @@ class Box:
 
 @dataclass
 class Border(Box):
+    """Represent border, inherit box, and add style and color attributes."""
+
     style: InitVar[str] = None
     color: InitVar[list[int]] = None
 
 
 class Element:
+    """Represent the element being painted to canvas, as opposed to one represented in the HTML parser."""
+
     def __init__(self, content: parsertypes.Element) -> None:
         self.pos: Pos = Pos()
         self.padding: Box = Box()
@@ -43,6 +51,7 @@ class Element:
         del self.content.children
 
     def calc_total_hw(self) -> tuple[int, int]:
+        """Calculate the total height and width of the boxes and element."""
         total_height: int = sum(
             (
                 self.content_height,
@@ -67,7 +76,8 @@ class Element:
         )
         return (total_height, total_width)
 
-    def update_box_pos(self) -> None:
+    def update_pos(self) -> None:
+        """Update position of the boxes and element."""
         # Canvas origin is top left
         self.margin.x = self.pos.x
         self.margin.y = self.pos.y
@@ -80,6 +90,8 @@ class Element:
 
 
 class BlockElement(Element):
+    """Base class for block elements."""
+
     def __init__(self, content: parsertypes.Element) -> None:
         super().__init__(content)
         self.padding.top: int = 5
@@ -100,6 +112,8 @@ class BlockElement(Element):
 
 
 class InlineElement(Element):
+    """Base class for inline elements. i.e <span>, <str>, etc."""
+
     def __init__(self, content: parsertypes.Element) -> None:
         super().__init__(content)
         _height, _width = self.calc_total_hw()
@@ -108,23 +122,29 @@ class InlineElement(Element):
 
 
 class ElementNotFoundError(Exception):
+    """Risen from ElementList.find()."""
+
     def __init__(self, message: str) -> None:
         super().__init__(message)
 
 
 class ElementNode:
+    """Node in a doubly linked list with other elements."""
+
     def __init__(self, element: Element) -> None:
         self.element: Element = element
         self.next: ElementNode | None
         self.prev: ElementNode | None
 
     def insert_next(self, element: Element) -> None:
+        """Insert a node after this one."""
         new: ElementNode = ElementNode(element)
         new.prev = self
         self.next.prev = new
         self.next = new
 
     def insert_prev(self, element: Element) -> None:
+        """Insert a node a before this one."""
         new: ElementNode = ElementNode(element)
         new.next = self
         self.prev.next = new
@@ -132,12 +152,15 @@ class ElementNode:
 
 
 class ElementList:
+    """Doubly linked list of elements to make updating positions easier."""
+
     def __init__(self, element: Element) -> None:
         self.head: ElementNode = ElementNode(element)
         self.length: int = 1
         self.end: ElementNode = self.head
 
     def find(self, element: Element) -> ElementNode:
+        """Find and element in the list."""
         if self.length == 1 and self.head.element == element:
             return self.head
         length_is_even: bool = self.length % 2 == 0
@@ -153,28 +176,33 @@ class ElementList:
         raise ElementNotFoundError(str(element.content))
 
     def prepend(self, element: Element) -> None:
+        """Add a new head node."""
         new: ElementNode = ElementNode(element)
         self.head.insert_prev(new)
         self.head = new
         self.length += 1
 
     def append(self, element: Element) -> None:
+        """Add a new end node."""
         new: ElementNode = ElementNode(element)
         self.end.insert_next(new)
         self.end = new
         self.length += 1
 
     def insert_after(self, element: Element, new_element: Element) -> None:
+        """Insert a new node after an existing node."""
         el: ElementNode = self.find(element)
         el.insert_next(new_element)
         self.length += 1
 
     def insert_before(self, element: Element, new_element: Element) -> None:
+        """Insert a new node before an existing node."""
         el: ElementNode = self.find(element)
         el.insert_prev(new_element)
         self.length += 1
 
     def delete(self, element: Element | ElementNode) -> None:
+        """Find and delete a node."""
         if element is Element:
             el: ElementNode = self.find(element)
             el.prev.next = el.next

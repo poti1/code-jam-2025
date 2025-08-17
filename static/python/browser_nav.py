@@ -7,8 +7,7 @@ from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
-
-from renderer import Renderer  # noqa: F401
+from render import Renderer  # noqa: F401
 
 
 class WebPage:
