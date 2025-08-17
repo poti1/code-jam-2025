@@ -39,7 +39,6 @@ class WebRequestPayload(BaseModel):
 
     headers: dict[str, str]
     target: str
-    final_url: str
 
 
 @app.post("/webpage/")
