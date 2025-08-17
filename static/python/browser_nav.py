@@ -132,14 +132,15 @@ async def keypress(event: KeyboardEvent) -> None:
             if input_url.startswith(("https://", "ftp://")):
                 browser_history_obj.load_page(url=input_url)
                 resp = await load_page(input_url)
-                user_history.append(input_url)
 
                 if resp is not None:
                     textarea_element.value = resp["final_url"]
+                    user_history.append(resp["final_url"])
             else:
                 resp, final_url = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=final_url)
                 textarea_element.value = final_url
+                user_history.append(final_url)
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
