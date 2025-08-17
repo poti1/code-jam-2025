@@ -39,6 +39,7 @@ class WebRequestPayload(BaseModel):
 
     headers: dict[str, str]
     target: str
+    final_url: str
 
 
 @app.post("/webpage/")
@@ -49,8 +50,9 @@ async def get_website_html(payload: Annotated[WebRequestPayload, Body()]) -> dic
     async with aiohttp.ClientSession(headers=headers) as session, session.get(target) as resp:
         html: str = await resp.text()
         resp_headers = resp.raw_headers
+        final_url: str = str(resp.url)
 
-    return {"content": html, "headers": resp_headers}
+    return {"content": html, "headers": resp_headers, "final_url": final_url}
 
 
 async def main() -> None:  # noqa: D103
