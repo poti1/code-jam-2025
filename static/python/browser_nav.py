@@ -1,6 +1,7 @@
 import asyncio
 import json
 import urllib.parse
+from typing import TYPE_CHECKING
 
 from cookies import CookieStorage
 from js import KeyboardEvent, MouseEvent, console
@@ -8,6 +9,11 @@ from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
 from render import Renderer  # noqa: F401
+
+from htmlparser._htmlparser import parse_html
+
+if TYPE_CHECKING:
+    from htmlparser._types import Document
 
 
 class WebPage:
@@ -99,6 +105,7 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
         resp = await load_page(current_website_url)
         textarea_element.value = resp["final_url"]
         # Access the response data and pass to the parser to display it correctly.
+        parsed_html: Document = parse_html(resp["content"])  # noqa: F841
 
 
 async def web_search(query: str) -> FetchResponse:
@@ -108,7 +115,6 @@ async def web_search(query: str) -> FetchResponse:
     )
 
     resp = await load_page(f"https://www.mojeek.com/search?q={encoded_query}")
-    console.log(resp["content"])
 
     return resp["content"], resp["final_url"]
 
@@ -137,11 +143,13 @@ async def keypress(event: KeyboardEvent) -> None:
                 if resp is not None:
                     textarea_element.value = resp["final_url"]
                     user_history.append(resp["final_url"])
+                    parsed_html: Document = parse_html(resp["content"])
             else:
                 resp, final_url = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=final_url)
                 textarea_element.value = final_url
                 user_history.append(final_url)
+                parsed_html: Document = parse_html(resp["content"])  # noqa: F841
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -155,6 +163,7 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         resp = await load_page(backward_url)
         textarea_element.value = resp["final_url"]
         console.log(resp["content"])
+        parsed_html: Document = parse_html(resp["content"])  # noqa: F841
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -166,6 +175,7 @@ async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         resp = await load_page(forward_url)
         textarea_element.value = resp["final_url"]
         console.log(resp["content"])
+        parsed_html: Document = parse_html(resp["content"])  # noqa: F841
 
 
 async def direct_address_bar():  # noqa: ANN201
