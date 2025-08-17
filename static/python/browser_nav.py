@@ -90,10 +90,12 @@ async def load_page(url: str) -> dict:
 
 async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Re-fetches the web page."""
+    textarea_element = document.getElementsByTagName("textarea")[0]
     current_website_url: str = browser_history_obj.get_current_page()
 
     if current_website_url:
-        resp = await load_page(current_website_url)  # noqa: F841
+        resp = await load_page(current_website_url)
+        textarea_element.value = resp["final_url"]
         # Access the response data and pass to the parser to display it correctly.
         browser_body = document.getElementsByClassName("browser-body")  # noqa: F841
 
