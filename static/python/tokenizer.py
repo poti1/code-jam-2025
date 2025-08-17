@@ -1,5 +1,4 @@
-from _types import Attribute, ParserState, Token
-
+from htmlparser_types import Attribute, ParserState, Token
 from treeconstructor import tree_constructor
 
 
@@ -196,10 +195,7 @@ class Tokenizer:
             case "/":
                 self.parser_state.state = "self-closing start tag"
             case ">":
-              # if self.parser_state.token.tag_name == "style":
-              #     self.parser_state.state = "style data"
-              # else:
-              #     self.parser_state.state = "data"
+                # partially implemented
                 self.parser_state.state = "data"
                 self._emit_token_from_parser_state(self.parser_state.token)
             case "":

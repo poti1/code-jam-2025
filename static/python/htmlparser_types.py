@@ -33,14 +33,16 @@ class Document:
     children: list["Element"] = field(default_factory=list)
 
     def traverse(self) -> Generator["Element", None, None]:
+        """Traverse HTML Document object."""
         q = deque([self])
         while q:
             curr = q.popleft()
             yield curr
             q.extend(curr.children)
 
-    def print(self,as_json=False) -> None:
-        import json
+    def print(self, *, as_json: bool = False) -> None:
+        """Print document in lines or as json."""
+        import json  # noqa: PLC0415
 
         for node in self.traverse():
             if node.is_element:
@@ -49,14 +51,16 @@ class Document:
                 attrs_str += "; " if node.text.strip() != "" else attrs_str
 
                 if as_json:
-                    print(json.dumps(
-                        {
-                            "name_str": name_str,
-                            "attrs_str": attrs_str,
-                        },
-                        sort_keys=True,
-                        indent=4,
-                    ))
+                    print(
+                        json.dumps(
+                            {
+                                "name_str": name_str,
+                                "attrs_str": attrs_str,
+                            },
+                            sort_keys=True,
+                            indent=4,
+                        ),
+                    )
                 else:
                     print(f"{name_str}{attrs_str}{node.text.strip()}")
 

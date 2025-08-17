@@ -1,5 +1,5 @@
 # Reference: https://html.spec.whatwg.org/
-from _types import Document, ParserState
+from htmlparser_types import Document, ParserState
 from tokenizer import Tokenizer
 from treeconstructor import html_doc
 
@@ -47,8 +47,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "filename",
-        default='index.html',
-        nargs='?',
+        default="index.html",
+        nargs="?",
         help="HTML file to parse",
     )
 

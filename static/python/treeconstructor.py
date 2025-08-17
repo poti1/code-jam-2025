@@ -1,5 +1,5 @@
 # Reference: https://html.spec.whatwg.org/multipage/parsing.html#tree-construction
-from _types import Document, Element, Token
+from htmlparser_types import Document, Element, Token
 
 open_element_stack: list = []
 

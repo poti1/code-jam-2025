@@ -4,7 +4,7 @@ from dataclasses import InitVar, dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    import htmlparser._types as parsertypes
+    import htmlparser_types as parsertypes
 
 from js import window
 
