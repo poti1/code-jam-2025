@@ -119,7 +119,7 @@ async def keypress(event: KeyboardEvent) -> None:
 
         if event.target.value != "":
             input_url = event.target.value.lower()
-            textarea_element = document.getElementsByTagName("textarea")[0]
+            textarea_element = await direct_address_bar()
 
             if "\n" in input_url:
                 input_url = input_url.replace("\n", "")
@@ -145,7 +145,7 @@ async def keypress(event: KeyboardEvent) -> None:
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the backward button functionality."""
-    textarea_element = document.getElementsByTagName("textarea")[0]
+    textarea_element = await direct_address_bar()
     backward_url: str = browser_history_obj.backward()
 
     console.log(backward_url)
@@ -158,13 +158,18 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the forward button functionality."""
-    textarea_element = document.getElementsByTagName("textarea")[0]
+    textarea_element = await direct_address_bar()
     forward_url: str = browser_history_obj.backward()
 
     if forward_url is not None:
         resp = await load_page(forward_url)
         textarea_element.value = resp["final_url"]
         console.log(resp["content"])
+
+
+async def direct_address_bar():  # noqa: ANN201
+    """Return the direct element for the address bar."""
+    return document.getElementById("direct-url-bar")
 
 
 address_bar = document.getElementsByClassName("url-bar")[0]
