@@ -159,7 +159,7 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the forward button functionality."""
     textarea_element = await direct_address_bar()
-    forward_url: str = browser_history_obj.backward()
+    forward_url: str = browser_history_obj.forward()
 
     if forward_url is not None:
         resp = await load_page(forward_url)
