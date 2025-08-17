@@ -188,4 +188,4 @@ async def main() -> None:  # noqa: D103
 
 
 if __name__ == "__main__":
-    asyncio.create_task(main())  # noqa: RUF006
+    create_task = asyncio.create_task(main())  # noqa: RUF006
