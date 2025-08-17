@@ -3,6 +3,7 @@ import json
 import urllib.parse
 from typing import TYPE_CHECKING
 
+from _htmlparser import parse_html
 from cookies import CookieStorage
 from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
@@ -10,10 +11,8 @@ from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
 from render import Renderer  # noqa: F401
 
-from htmlparser._htmlparser import parse_html
-
 if TYPE_CHECKING:
-    from htmlparser._types import Document
+    from htmlparser_types import Document
 
 
 class WebPage:
@@ -144,12 +143,13 @@ async def keypress(event: KeyboardEvent) -> None:
                     textarea_element.value = resp["final_url"]
                     user_history.append(resp["final_url"])
                     parsed_html: Document = parse_html(resp["content"])
+                    print(str(parsed_html))
             else:
                 resp, final_url = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=final_url)
                 textarea_element.value = final_url
                 user_history.append(final_url)
-                parsed_html: Document = parse_html(resp["content"])  # noqa: F841
+                parsed_html: Document = parse_html(resp["content"])
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
