@@ -98,13 +98,14 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
         browser_body = document.getElementsByClassName("browser-body")  # noqa: F841
 
 
-async def google_search(query: str) -> FetchResponse:
-    """Modify a Google URL query for searches."""
+async def web_search(query: str) -> FetchResponse:
+    """Modify a URL query for searches."""
     encoded_query: str = urllib.parse.quote_plus(
         string=query,
     )
 
-    resp = await load_page(f"https://www.google.com/search?q={encoded_query}")
+    resp = await load_page(f"https://www.mojeek.com/search?q={encoded_query}")
+    console.log(resp["content"])
 
     return resp["content"], encoded_query
 
@@ -132,7 +133,7 @@ async def keypress(event: KeyboardEvent) -> None:
                 user_history.append(input_url)
                 console.log(resp["content"])
             else:
-                resp, encoded_query = await google_search(query=event.target.value)
+                resp, encoded_query = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=encoded_query)
                 user_history.append(encoded_query)
                 console.log(resp["content"])
