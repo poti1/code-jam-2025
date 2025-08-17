@@ -96,9 +96,19 @@ class Cookie:
 class CookieStorage:
     """A storage class for manipulating and reading internet cookies."""
 
-    def __init__(self, cookies: list[Cookie]) -> None:
+    def __init__(self, cookies: list[Cookie] | None = None) -> None:
+        if not cookies:
+            cookies = []
         self.cookies = cookies
         # TODO: cookies get sorted, getitem behavior
+
+    def handle_headers(self, headers: list[tuple[str, str]], request_host: str) -> None:
+        """Parse a list of raw headers and update internal storage."""
+        for name, value in headers:
+            if name.casefold().strip() != "set-cookie":
+                continue
+
+            self.cookies.append(Cookie.from_str(value, request_host))
 
     @classmethod
     def from_headers(cls, cookie_headers: list[str], request_host: str) -> Self:
@@ -121,7 +131,7 @@ class CookieStorage:
 
     def to_headers(self) -> str:
         """Return the relevant cookies to construct a Cookie: request header."""
-        return self.to_cookie_string(for_javascript=False)
+        return {"Cookie:": self.to_cookie_string(for_javascript=False)}
 
     def __getitem__(self, key: str) -> list[Cookie]:
         """Select all matching cookies by name."""

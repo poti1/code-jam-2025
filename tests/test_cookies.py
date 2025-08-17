@@ -1,6 +1,6 @@
 import unittest
 
-from cookies import CookieStorage
+from static.python.cookies import CookieStorage
 
 
 class CookieTest(unittest.TestCase):

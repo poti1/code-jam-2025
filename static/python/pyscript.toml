@@ -1,0 +1,4 @@
+packages = []
+
+[files]
+"cookies.py"=""
