@@ -57,9 +57,9 @@ class BrowserHistory:
         return self.current_page.url
 
 
-browser_history_obj = BrowserHistory()
-cookie_storage = CookieStorage()
-user_history = []
+browser_history_obj: BrowserHistory = BrowserHistory()
+cookie_storage: CookieStorage = CookieStorage()
+user_history: list = []
 
 
 async def load_page(url: str) -> dict:
