@@ -107,7 +107,7 @@ async def web_search(query: str) -> FetchResponse:
     resp = await load_page(f"https://www.mojeek.com/search?q={encoded_query}")
     console.log(resp["content"])
 
-    return resp["content"], encoded_query
+    return resp["content"], resp["final_url"]
 
 
 async def keypress(event: KeyboardEvent) -> None:
@@ -131,12 +131,13 @@ async def keypress(event: KeyboardEvent) -> None:
                 browser_history_obj.load_page(url=input_url)
                 resp = await load_page(input_url)
                 user_history.append(input_url)
-                console.log(resp["content"])
+
+                if resp is not None:
+                    textarea_element.value = resp["final_url"]
             else:
-                resp, encoded_query = await web_search(query=event.target.value)
-                browser_history_obj.load_page(url=encoded_query)
-                user_history.append(encoded_query)
-                console.log(resp["content"])
+                resp, final_url = await web_search(query=event.target.value)
+                browser_history_obj.load_page(url=final_url)
+                textarea_element.value = final_url
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
