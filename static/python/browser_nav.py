@@ -183,6 +183,11 @@ async def direct_address_bar():  # noqa: ANN201
     return document.getElementById("direct-url-bar")
 
 
+async def tab_title():  # noqa: ANN201
+    """Return the direct element for the tab's title."""
+    return document.querySelector(".tab-title span")
+
+
 async def main() -> None:  # noqa: D103
     address_bar = document.getElementsByClassName("url-bar")[0]
     add_event_listener(address_bar, "keypress", keypress)
