@@ -1,3 +1,4 @@
+import asyncio
 import json
 import urllib.parse
 
@@ -56,9 +57,9 @@ class BrowserHistory:
         return self.current_page.url
 
 
-browser_history_obj = BrowserHistory()
-cookie_storage = CookieStorage()
-user_history = []
+browser_history_obj: BrowserHistory = BrowserHistory()
+cookie_storage: CookieStorage = CookieStorage()
+user_history: list = []
 
 
 async def load_page(url: str) -> dict:
@@ -90,23 +91,26 @@ async def load_page(url: str) -> dict:
 
 async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Re-fetches the web page."""
+    textarea_element = document.getElementsByTagName("textarea")[0]
     current_website_url: str = browser_history_obj.get_current_page()
 
     if current_website_url:
-        resp = await load_page(current_website_url)  # noqa: F841
+        resp = await load_page(current_website_url)
+        textarea_element.value = resp["final_url"]
         # Access the response data and pass to the parser to display it correctly.
         browser_body = document.getElementsByClassName("browser-body")  # noqa: F841
 
 
-async def google_search(query: str) -> FetchResponse:
-    """Modify a Google URL query for searches."""
+async def web_search(query: str) -> FetchResponse:
+    """Modify a URL query for searches."""
     encoded_query: str = urllib.parse.quote_plus(
         string=query,
     )
 
-    resp = await load_page(f"https://www.google.com/search?q={encoded_query}")
+    resp = await load_page(f"https://www.mojeek.com/search?q={encoded_query}")
+    console.log(resp["content"])
 
-    return resp["content"], encoded_query
+    return resp["content"], resp["final_url"]
 
 
 async def keypress(event: KeyboardEvent) -> None:
@@ -116,49 +120,72 @@ async def keypress(event: KeyboardEvent) -> None:
 
         if event.target.value != "":
             input_url = event.target.value.lower()
+            textarea_element = await direct_address_bar()
 
-            if input_url.lower().startswith(("https://", "ftp://")):
+            if "\n" in input_url:
+                input_url = input_url.replace("\n", "")
+                textarea_element.value = input_url
+
+            if input_url.startswith("http://"):
+                input_url = input_url.replace("http://", "https://")
+                textarea_element.value = input_url
+
+            if input_url.startswith(("https://", "ftp://")):
                 browser_history_obj.load_page(url=input_url)
                 resp = await load_page(input_url)
-                user_history.append(input_url)
-                console.log(resp["content"])
+
+                if resp is not None:
+                    textarea_element.value = resp["final_url"]
+                    user_history.append(resp["final_url"])
             else:
-                resp, encoded_query = await google_search(query=event.target.value)
-                browser_history_obj.load_page(url=encoded_query)
-                user_history.append(encoded_query)
-                console.log(resp)
+                resp, final_url = await web_search(query=event.target.value)
+                browser_history_obj.load_page(url=final_url)
+                textarea_element.value = final_url
+                user_history.append(final_url)
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the backward button functionality."""
+    textarea_element = await direct_address_bar()
     backward_url: str = browser_history_obj.backward()
 
     console.log(backward_url)
 
     if backward_url is not None:
         resp = await load_page(backward_url)
-
+        textarea_element.value = resp["final_url"]
         console.log(resp["content"])
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
     """Handle the forward button functionality."""
-    forward_url: str = browser_history_obj.backward()
+    textarea_element = await direct_address_bar()
+    forward_url: str = browser_history_obj.forward()
 
     if forward_url is not None:
         resp = await load_page(forward_url)
-
+        textarea_element.value = resp["final_url"]
         console.log(resp["content"])
 
 
-address_bar = document.getElementsByClassName("url-bar")[0]
-add_event_listener(address_bar, "keypress", keypress)
+async def direct_address_bar():  # noqa: ANN201
+    """Return the direct element for the address bar."""
+    return document.getElementById("direct-url-bar")
 
-reload_element = document.getElementsByClassName("reload")[0]
-add_event_listener(reload_element, "click", reload_handler)
 
-forward_element = document.getElementsByClassName("forward-arrow")[0]
-add_event_listener(forward_element, "click", forward_handler)
+async def main() -> None:  # noqa: D103
+    address_bar = document.getElementsByClassName("url-bar")[0]
+    add_event_listener(address_bar, "keypress", keypress)
 
-backward_element = document.getElementsByClassName("backward-arrow")[0]
-add_event_listener(backward_element, "click", backward_handler)
+    reload_element = document.getElementsByClassName("reload")[0]
+    add_event_listener(reload_element, "click", reload_handler)
+
+    forward_element = document.getElementsByClassName("forward-arrow")[0]
+    add_event_listener(forward_element, "click", forward_handler)
+
+    backward_element = document.getElementsByClassName("backward-arrow")[0]
+    add_event_listener(backward_element, "click", backward_handler)
+
+
+if __name__ == "__main__":
+    create_task = asyncio.create_task(main())  # noqa: RUF006
