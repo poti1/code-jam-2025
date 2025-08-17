@@ -1,9 +1,13 @@
+import importlib
 import urllib.parse
 
 from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
+
+importlib.invalidate_caches()
+from renderer import Renderer  # noqa: E402, F401
 
 
 class WebPage:
@@ -70,7 +74,6 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
         console.log(await resp.text())
 
         # Access the response data and pass to the parser to display it correctly.
-        browser_body = document.getElementsByClassName("browser-body")  # noqa: F841
 
 
 async def google_search(query: str) -> FetchResponse:
