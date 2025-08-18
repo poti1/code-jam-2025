@@ -31,28 +31,3 @@ def parse_html(html: str) -> Document:
         else:
             col += 1
     return html_doc
-
-
-if __name__ == "__main__":
-    """
-        Run as:
-        python htmlparser/_htmlparser.py index.html
-        python htmlparser/_htmlparser.py
-        python htmlparser/_htmlparser.py --help
-    """
-    import argparse
-    from pathlib import Path
-
-    parser = argparse.ArgumentParser(prog="HTML Parser", description="Parse HTML into a Python Object")
-
-    parser.add_argument(
-        "filename",
-        default="index.html",
-        nargs="?",
-        help="HTML file to parse",
-    )
-
-    args = parser.parse_args()
-
-    with Path(args.filename).open(encoding="utf-8") as f:
-        parse_html(f.read()).print(as_json=True)
