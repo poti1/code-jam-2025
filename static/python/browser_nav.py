@@ -106,6 +106,8 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
         # Access the response data and pass to the parser to display it correctly.
         parsed_html: Document = parse_html(resp["content"])
         await change_tab_title(parsed_html)
+        await render_to_canvas()
+
         console.log(parsed_html)
 
 
@@ -146,6 +148,7 @@ async def keypress(event: KeyboardEvent) -> None:
                     user_history.append(resp["final_url"])
                     parsed_html: Document = parse_html(resp["content"])
                     await change_tab_title(parsed_html)
+                    await render_to_canvas()
             else:
                 resp, final_url = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=final_url)
@@ -153,6 +156,7 @@ async def keypress(event: KeyboardEvent) -> None:
                 user_history.append(final_url)
                 parsed_html: Document = parse_html(resp["content"])
                 await change_tab_title(parsed_html)
+                await render_to_canvas()
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -168,6 +172,7 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         console.log(resp["content"])
         parsed_html: Document = parse_html(resp["content"])
         await change_tab_title(parsed_html)
+        await render_to_canvas()
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -182,6 +187,7 @@ async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
 
         parsed_html: Document = parse_html(resp["content"])
         await change_tab_title(parsed_html)
+        await render_to_canvas()
 
 
 async def direct_address_bar():
@@ -198,6 +204,18 @@ async def change_tab_title(parsed_html: str) -> None:
 
     tab_title_element = document.querySelector(".tab-title span")
     tab_title_element.innerText = website_title
+
+
+async def render_to_canvas() -> None:
+    """Draws the web page."""
+    canvas = document.getElementById("canvas")
+    ctx = canvas.getContext("2d")
+
+    ctx.fillStyle = "rgb(200 0 0)"
+    ctx.fillRect(10, 10, 50, 50)
+
+    ctx.fillStyle = "rgb(0 0 200 / 50%)"
+    ctx.fillRect(30, 30, 50, 50)
 
 
 async def main() -> None:  # noqa: D103
