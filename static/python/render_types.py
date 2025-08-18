@@ -160,7 +160,7 @@ class ElementList:
         self.end: ElementNode = self.head
 
     def find(self, element: Element) -> ElementNode:
-        """Find and element in the list."""
+        """Find an element in the list."""
         if self.length == 1 and self.head.element == element:
             return self.head
         length_is_even: bool = self.length % 2 == 0
