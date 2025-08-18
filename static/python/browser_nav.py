@@ -10,7 +10,7 @@ from htmlparser_types import Document
 from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
-from pyscript import document, display
+from pyscript import display, document
 from render import Renderer
 
 
@@ -172,7 +172,6 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         parsed_html: Document = parse_html(resp["content"])
         await change_tab_title(parsed_html=parsed_html)
         display(resp["content"], target="browser-body-display")
-
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
