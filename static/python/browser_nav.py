@@ -104,7 +104,9 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
         resp = await load_page(current_website_url)
         textarea_element.value = resp["final_url"]
         # Access the response data and pass to the parser to display it correctly.
-        parsed_html: Document = parse_html(resp["content"])  # noqa: F841
+        parsed_html: Document = parse_html(resp["content"])
+        await change_tab_title(parsed_html)
+        console.log(parsed_html)
 
 
 async def web_search(query: str) -> FetchResponse:
@@ -143,13 +145,14 @@ async def keypress(event: KeyboardEvent) -> None:
                     textarea_element.value = resp["final_url"]
                     user_history.append(resp["final_url"])
                     parsed_html: Document = parse_html(resp["content"])
-                    print(str(parsed_html))
+                    await change_tab_title(parsed_html)
             else:
                 resp, final_url = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=final_url)
                 textarea_element.value = final_url
                 user_history.append(final_url)
                 parsed_html: Document = parse_html(resp["content"])
+                await change_tab_title(parsed_html)
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -163,7 +166,8 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         resp = await load_page(backward_url)
         textarea_element.value = resp["final_url"]
         console.log(resp["content"])
-        parsed_html: Document = parse_html(resp["content"])  # noqa: F841
+        parsed_html: Document = parse_html(resp["content"])
+        await change_tab_title(parsed_html)
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -175,17 +179,25 @@ async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         resp = await load_page(forward_url)
         textarea_element.value = resp["final_url"]
         console.log(resp["content"])
-        parsed_html: Document = parse_html(resp["content"])  # noqa: F841
+
+        parsed_html: Document = parse_html(resp["content"])
+        await change_tab_title(parsed_html)
 
 
-async def direct_address_bar():  # noqa: ANN201
+async def direct_address_bar():
     """Return the direct element for the address bar."""
     return document.getElementById("direct-url-bar")
 
 
-async def tab_title():  # noqa: ANN201
+async def change_tab_title(parsed_html: str) -> None:
     """Return the direct element for the tab's title."""
-    return document.querySelector(".tab-title span")
+    for element in parsed_html.traverse():
+        for child_element in element.children:
+            if child_element.name == "title":
+                website_title = child_element.text
+
+    tab_title_element = document.querySelector(".tab-title span")
+    tab_title_element.innerText = website_title
 
 
 async def main() -> None:  # noqa: D103
