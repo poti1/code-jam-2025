@@ -106,7 +106,7 @@ async def reload_handler(event: MouseEvent) -> None:  # noqa: ARG001
         # Access the response data and pass to the parser to display it correctly.
         parsed_html: Document = parse_html(resp["content"])
         await change_tab_title(parsed_html)
-        await render_to_canvas()
+        await render_to_canvas(parsed_html)
 
         console.log(parsed_html)
 
@@ -147,16 +147,16 @@ async def keypress(event: KeyboardEvent) -> None:
                     textarea_element.value = resp["final_url"]
                     user_history.append(resp["final_url"])
                     parsed_html: Document = parse_html(resp["content"])
-                    await change_tab_title(parsed_html)
-                    await render_to_canvas()
+                    await change_tab_title(parsed_html=parsed_html)
+                    await render_to_canvas(parsed_html=parsed_html)
             else:
                 resp, final_url = await web_search(query=event.target.value)
                 browser_history_obj.load_page(url=final_url)
                 textarea_element.value = final_url
                 user_history.append(final_url)
                 parsed_html: Document = parse_html(resp["content"])
-                await change_tab_title(parsed_html)
-                await render_to_canvas()
+                await change_tab_title(parsed_html=parsed_html)
+                await render_to_canvas(parsed_html=parsed_html)
 
 
 async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -171,8 +171,8 @@ async def backward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         textarea_element.value = resp["final_url"]
         console.log(resp["content"])
         parsed_html: Document = parse_html(resp["content"])
-        await change_tab_title(parsed_html)
-        await render_to_canvas()
+        await change_tab_title(parsed_html=parsed_html)
+        await render_to_canvas(parsed_html=parsed_html)
 
 
 async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
@@ -186,8 +186,8 @@ async def forward_handler(event: MouseEvent) -> None:  # noqa: ARG001
         console.log(resp["content"])
 
         parsed_html: Document = parse_html(resp["content"])
-        await change_tab_title(parsed_html)
-        await render_to_canvas()
+        await change_tab_title(parsed_html=parsed_html)
+        await render_to_canvas(parsed_html=parsed_html)
 
 
 async def direct_address_bar():
