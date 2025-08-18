@@ -58,4 +58,8 @@ ignore = [
     # Use a list comprehension
     "PERF401",
     "FIX",
+    # Unused function argument
+    "ANN201",
+    # Import in type-checking block
+    "TC004",
 ]

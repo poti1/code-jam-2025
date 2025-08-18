@@ -27,5 +27,14 @@ build/
 .idea/
 # VSCode
 .vscode/
+# Ruff
+.ruff_cache/
 # MacOS
 .DS_Store
+
+# Testing dirs and files
+testing/
+test.py
+
+# Vim
+*.sw[op]
