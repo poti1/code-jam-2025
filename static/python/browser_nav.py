@@ -1,18 +1,15 @@
 import asyncio
 import json
 import urllib.parse
-from typing import TYPE_CHECKING
 
 from _htmlparser import parse_html
 from cookies import CookieStorage
+from htmlparser_types import Document  # noqa: TC002
 from js import KeyboardEvent, MouseEvent, console
 from pyodide.ffi.wrappers import add_event_listener
 from pyodide.http import FetchResponse, pyfetch
 from pyscript import document
 from render import Renderer  # noqa: F401
-
-if TYPE_CHECKING:
-    from htmlparser_types import Document
 
 
 class WebPage:
