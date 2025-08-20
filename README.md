@@ -22,7 +22,7 @@ A web browser inside a web browser made with PyScript and FastAPI. Its absurd is
 ## Demo
 
 ### Visiting a Website
-When using the address bar, you'll have to enter a website address as `https://` before the domain name. If a user used `http://` it would not work, it was planned to make it so going to an insecure protocol like `http` would make the SSL icon shield change to a different variant. So, `http://` is not supported but changed to `https://` however because of how `aiohttp` works the former raises an error.
+Type a website into the address bar and hit enter. All `http://` links are automatically changed to `https://`. Insecure `http` browsing isn’t supported when using `aiohttp`.
 
 <img src="./docs/assets/visit_website.gif">
 
