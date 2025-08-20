@@ -48,7 +48,7 @@ http://127.0.0.1:8000
 
 
 ## Attribution
-Free resources used to make the pyBrowser logo and its user interface.  
+Free resources used to make the pyBrowser logo and its user interface as the per their license agreement we are required to attribute their creators.  
 
 <a href="https://www.flaticon.com/free-icons/pacific" title="pacific icons">Pacific icons created by Kalashnyk - Flaticon</a>  
 <a href="https://www.flaticon.com/free-icons/snake" title="snake icons">Snake icons created by Vitaly Gorbachev - Flaticon</a>  
