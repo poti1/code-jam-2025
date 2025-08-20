@@ -4,7 +4,9 @@
       <img width="150px" alt="pybrowser logo" src="./docs/assets/pybrowser_logo.png">
     </picture>
       <div align="center">
-         <h1>pyBrowser</h1>
+         <h3>pyBrowser</h3>
+         <p>Slither through the web.</p>
+         <p>A team project brought to you by the Phenomenal Philodendrons for the 2025 Python Discord Code Jam.</p>
       </div>
 </div>
 
