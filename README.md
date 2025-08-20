@@ -1,4 +1,12 @@
 
+<div align="center">
+    <picture>
+      <img width="150px" alt="pybrowser logo" src="./docs/assets/pybrowser_logo.png">
+    </picture>
+      <div align="center">
+         <h1>pyBrowser</h1>
+      </div>
+</div>
 
 
 ## Attribution
