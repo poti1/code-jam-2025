@@ -11,6 +11,17 @@
 ## About
 A web browser inside a web browser. Its absurd isn't it? It's absolutely the wrong tool for the job: it's even in Python. Let's ignore those websites that let you use a virtual web browser as per virtual machines on the web, no we don't need to remember those.
 
+## Features
+* Search with Mojeek right from the URL bar
+* Go back and forth to visited pages
+* Page reload
+* Sleek UI
+* Pages are displayed in white font HTML
+* Mostly working HTML parser
+* In-browser page requests
+* Cookies!
+
+
 ## Attribution
 Free resources used to make the pyBrowser logo and its user interface.  
 
