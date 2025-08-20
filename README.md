@@ -11,7 +11,7 @@
 </div>
 
 ## About
-A web browser inside a web browser. Its absurd isn't it? It's absolutely the wrong tool for the job: it's even in Python. Let's ignore those websites that let you use a virtual web browser as per virtual machines on the web, no we don't need to remember those.
+A web browser inside a web browser made with PyScript and FastAPI. Its absurd isn't it? It's absolutely the wrong tool for the job: it's even in Python. Let's ignore those websites that let you use a virtual web browser as per virtual machines on the web, no we don't need to remember those.
 
 ## Features
 * Search with Mojeek right from the address bar
