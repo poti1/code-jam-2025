@@ -19,6 +19,33 @@ A web browser inside a web browser made with PyScript and FastAPI. Its absurd is
 * Page reload
 * Cookies!
 
+## Demo
+
+### Visiting a Website
+When using the address bar, you'll have to enter a website address as `https://` before the domain name. If a user used `http://` it would not work, it was planned to make it so going to an insecure protocol like `http` would make the SSL icon shield change to a different variant. So, `http://` is not supported but changed to `https://` however because of how `aiohttp` works the former raises an error.
+
+<img src="./docs/assets/visit_website.gif">
+
+### Searching Using the Address Bar
+Searching can also be performed through the address bar, do note because of a bug enter has to be pressed twice to display the HTML.
+
+<img src="./docs/assets/search_address_bar.gif">
+
+### Traversing Browser History
+Going forward and backward from your recent and visited web page is done in a breeze. However, in the preview below visiting YouTube was a mistake since it made everything sluggish. The backward/forward icons remain grayed out: there were issues where changing SVG color at the time was not working in PyScript.
+
+There was a list for storing the browser history and UI completely designed/coded in HTML/CSS but needed to be implemented using PyScript but alas it was too late.
+
+<img src="./docs/assets/browser_history.gif">
+
+### Reloading a Website
+Does what it says in the title, may not look like it but the page was re-fetched in the backend api. Why my text highlighting didn't disappear after reloading is a bug that was just discovered.
+
+<img src="./docs/assets/reload_website.gif">
+
+### Cookies UI, Rendering HTML/CSS, and Other Issues
+We ran out of time and did not have enough hands available to create a menu for editing cookies, viewing cookies, searching through cookies, or filtering per domain name. The HTML parser was *mostly* complete: we needed to use Canvas to paint the elements onto the page. After one of our own suffered from burn out, it was difficult to find someone who understood the code left over to finish the Canvas painting portion which occured dangerously close to the deadline and would have been helpful with the CSS parser implemented. The CSS parser remained incomplete and one of our teammates&mdash;who coded it on a fork&mdash;went mia one day before the end of Code Jam, so it was never integrated into the main repository.
+
 ## Installation
 Our project relies on the `uv` Python package and project manager.
 ```
@@ -37,6 +64,8 @@ A server is spawned with the following address:
 ```
 http://127.0.0.1:8000
 ```
+
+
 
 ## Contributions
 - <a href="https://github.com/xing216">Xing</a> implemented/integrated the HTML parser, helped with documentation, and coded the Canvas rendering API
