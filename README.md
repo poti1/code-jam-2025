@@ -20,7 +20,6 @@ A web browser inside a web browser. Its absurd isn't it? It's absolutely the wro
 * Page reload
 * Cookies!
 
-
 ## Attribution
 Free resources used to make the pyBrowser logo and its user interface.  
 
