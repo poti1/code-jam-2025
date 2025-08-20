@@ -39,6 +39,14 @@ A server is created with the following address:
 http://127.0.0.1:8000
 ```
 
+## Contributions
+- <a href="https://github.com/xing216">Xing</a> implemented/integrated the HTML parser, helped with documentation, and coded the Canvas rendering API
+- <a href="https://github.com/Gimpy3887">Gimpy</a> implemented the frontend, backend api, wrote the documentation, and managed the repo
+- <a href="https://github.com/bast0006">Cat(cat.cat())</a> created/integrated the cookies feature
+- <a href="https://github.com/cameronabel">Cameron</a> created the CSS parser
+- <a href="https://github.com/poti1">timka7060</a> (Team Lead) had minor contributions to a different version of the CSS parser and minor repo management
+
+
 ## Attribution
 Free resources used to make the pyBrowser logo and its user interface.  
 
