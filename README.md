@@ -20,6 +20,25 @@ A web browser inside a web browser. Its absurd isn't it? It's absolutely the wro
 * Page reload
 * Cookies!
 
+## Installation
+Our project relies on the `uv` Python package and project manager.
+```
+pip install uv
+```
+After installing `uv`, packages should get synced with the virtual environment.
+```
+uv sync
+```
+Now, you should be able to run the project.
+```
+uv run main.py
+```
+
+A server is created with the following address:
+```
+http://127.0.0.1:8000
+```
+
 ## Attribution
 Free resources used to make the pyBrowser logo and its user interface.  
 
